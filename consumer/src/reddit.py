@@ -6,7 +6,8 @@ class CustomRedditClient(praw.Reddit):
         super().__init__(*args, **kwargs)
 
     def _to_dict(self, obj):
-        j = {k: v for k, v in obj.__dict__.items() if k != '_reddit'}
+        j = {k: v for k, v in obj.__dict__.items()
+             if k not in ['_reddit', 'poll_data']}
         if isinstance(obj, praw.models.reddit.submission.Submission):  # type: ignore
             if j["subreddit"] is not None:
                 j["subreddit"] = str(j['subreddit'])
