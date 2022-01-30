@@ -1,0 +1,37 @@
+version: '3.1'
+
+services:
+  rabbitmq:
+    image: docker.io/bitnami/rabbitmq:latest
+    container_name: rabbitmq
+    ports:
+      - '5672:5672'
+      - '25672:25672'
+      - '15672:15672'
+    environment:
+      - RABBITMQ_USERNAME=admin
+      - RABBITMQ_PASSWORD=admin
+    volumes:
+       - ./rabbitmq_data:/bitnami
+    healthcheck:
+         test: rabbitmq-diagnostics -q ping
+         interval: 30s
+         timeout: 30s
+         retries: 10
+    networks:
+      - frontend
+  # mongo:
+  #   image: mongo
+  #   ports:
+  #     - "27017:27017"
+  #   environment:
+  #     - MONGO_INITDB_ROOT_USERNAME=admin
+  #     - MONGO_INITDB_ROOT_PASSWORD=admin123$
+  #   volumes:
+  #     - ./mongo_data:/data/db
+  #   networks:
+  #     - frontend
+
+networks:
+    frontend:
+        driver: bridge
